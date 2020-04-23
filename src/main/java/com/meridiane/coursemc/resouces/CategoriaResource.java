@@ -15,10 +15,11 @@ import com.meridiane.coursemc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
-
 public class CategoriaResource {
+	
 	@Autowired
 	private CategoriaService service;
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> listar(@PathVariable Integer id) {
 		Categoria obj = service.buscar(id);
