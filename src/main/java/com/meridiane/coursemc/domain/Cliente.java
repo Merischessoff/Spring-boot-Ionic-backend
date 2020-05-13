@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.meridiane.coursemc.domain.enums.TipoCliente;
 
 @Entity
@@ -29,7 +30,7 @@ public class Cliente implements Serializable{
 	private String cpfCnpj;
 	private Integer tipo;
 	
-	
+	@JsonManagedReference //Evita Serialização cíclica, essa anotação diz que Cliente pode serializar endereços
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -37,6 +38,8 @@ public class Cliente implements Serializable{
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>(); //Aqui a classe Telefone que estava no diagrama uml virou um atributo da classe Cliente, conjunto de telefones
 	
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 	
 	public Cliente() {}
 
@@ -104,6 +107,19 @@ public class Cliente implements Serializable{
 
 	public void setCpfCnpj(String cpfCnpj) {
 		this.cpfCnpj = cpfCnpj;
+	}
+
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override
