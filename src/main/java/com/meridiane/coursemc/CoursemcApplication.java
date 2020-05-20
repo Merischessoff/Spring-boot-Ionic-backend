@@ -13,6 +13,7 @@ import com.meridiane.coursemc.domain.Cidade;
 import com.meridiane.coursemc.domain.Cliente;
 import com.meridiane.coursemc.domain.Endereco;
 import com.meridiane.coursemc.domain.Estado;
+import com.meridiane.coursemc.domain.ItemPedido;
 import com.meridiane.coursemc.domain.Pagamento;
 import com.meridiane.coursemc.domain.PagamentoComBoleto;
 import com.meridiane.coursemc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.meridiane.coursemc.repositories.CidadeRepository;
 import com.meridiane.coursemc.repositories.ClienteRepository;
 import com.meridiane.coursemc.repositories.EnderecoRepository;
 import com.meridiane.coursemc.repositories.EstadoRepository;
+import com.meridiane.coursemc.repositories.ItemPedidoRepository;
 import com.meridiane.coursemc.repositories.PagamentoRepository;
 import com.meridiane.coursemc.repositories.PedidoRepository;
 import com.meridiane.coursemc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CoursemcApplication implements CommandLineRunner/*Ao implementar es
 	
 	@Autowired //Instancia automaticamente
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired //Instancia automaticamente
+	private ItemPedidoRepository itemPedidoRepository;
 	
 
 	public static void main(String[] args) {
@@ -124,6 +129,18 @@ public class CoursemcApplication implements CommandLineRunner/*Ao implementar es
 		
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 00.0, 1, 2000);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 00.0, 2, 80);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.0, 1, 800);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped1.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
