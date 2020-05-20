@@ -5,10 +5,13 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@JsonIgnore // Classe Item pedido vai ser ignorada para serialização de ambas as classes Pedido e produto
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 	
@@ -28,6 +31,7 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;
 	}
 
+	@JsonIgnore // tudo que começa com get o java serializa por isso esses métodos devem ser ignorados para não haver serialização json cíclica
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
