@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.meridiane.coursemc.domain.Categoria;
+import com.meridiane.coursemc.domain.Cliente;
 import com.meridiane.coursemc.dto.CategoriaDTO;
 import com.meridiane.coursemc.repositories.CategoriaRepository;
 import com.meridiane.coursemc.services.exceptions.DataIntegrityException;
@@ -33,8 +34,13 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 	
 	public void delete(Integer id) {
