@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.meridiane.coursemc.domain.Categoria;
 import com.meridiane.coursemc.domain.Cliente;
+import com.meridiane.coursemc.dto.CategoriaDTO;
 import com.meridiane.coursemc.dto.ClienteDTO;
+import com.meridiane.coursemc.dto.ClienteNewDTO;
 import com.meridiane.coursemc.services.ClienteService;
 
 @RestController
@@ -35,13 +38,14 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void>insert(@Valid @RequestBody ClienteDTO objDto){ //@RequestBody faz o json ser convertido para o objeto categoria automaticamente
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
 		Cliente obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto,@PathVariable Integer id){
@@ -64,6 +68,7 @@ public class ClienteResource {
 		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
+	
 	
 	@RequestMapping(value="/page",method=RequestMethod.GET)
 	public ResponseEntity<Page<ClienteDTO>> findPage(
