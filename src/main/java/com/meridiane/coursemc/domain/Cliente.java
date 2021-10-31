@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Cliente implements Serializable{
 	private Integer tipo;
 	
 	//@JsonManagedReference //Evita Serialização cíclica, essa anotação diz que Cliente pode serializar endereços
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="cliente", cascade=CascadeType.ALL)//com cascade=CascadeType.ALL se um cliente for apagado, os seus endereços tb serão
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	@ElementCollection//Gera tabela de relacionamento muitos para muitos
